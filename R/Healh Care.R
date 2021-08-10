@@ -11,8 +11,8 @@ library(tidyverse)
 
 
 #load the health data
-secD <- read.spss(file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/Data/PSLM spss data/SecD.sav",use.value.label=TRUE,to.data.frame=TRUE)
-secL <- read.spss(file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/Data/PSLM spss data/SecL.sav",use.value.label=TRUE,to.data.frame=TRUE)
+secD <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecD.sav",use.value.label=TRUE,to.data.frame=TRUE)
+secL <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecL.sav",use.value.label=TRUE,to.data.frame=TRUE)
 secD <- as_tibble(secD)
 secL <- as_tibble(secL)
 
@@ -162,7 +162,7 @@ write.csv(x=health_provider_district,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/t
 #TABLE 7
 provider_problem_provinces <-
   health %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarise(Total_response = sum(problem==1,problem==2,problem==3,na.rm = TRUE),
             Satisfied = sum(problem==1,na.rm = TRUE),

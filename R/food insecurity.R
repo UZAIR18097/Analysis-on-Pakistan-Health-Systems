@@ -14,7 +14,7 @@ library(tidyverse)
 
 
 #load the health data
-secK <- read.spss(file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/Data/PSLM spss data/SecK.sav",use.value.label=TRUE,to.data.frame=TRUE)
+secK <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecK.sav",use.value.label=TRUE,to.data.frame=TRUE)
 secK <- as_tibble(secK)
 
 #select the required data

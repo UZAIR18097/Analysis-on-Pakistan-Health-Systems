@@ -14,7 +14,7 @@ library(tidyverse)
 
 
 #load the health data
-secJ <- read.spss(file = "E:/IHI-2/Project/IHI-2/Data/PSLM spss data//SecJ.sav",use.value.label=TRUE,to.data.frame=TRUE)
+secJ <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecJ.sav",use.value.label=TRUE,to.data.frame=TRUE)
 secJ <- as_tibble(secJ)
 
 #select the required data
@@ -64,10 +64,10 @@ levels(pp_care$prenatal_consult_visits)[levels(pp_care$prenatal_consult_visits)=
 levels(pp_care$prenatal_consult_visits)[levels(pp_care$prenatal_consult_visits)=="21"] <- "3"
 
 
-#rename prenatal_consult_place : Private Hos = 1,Govt Hos = 2, Home-TBA = 3, Home-LHW =3, Home-LHV = 3,Home Doc = 3,Other = 3   
+#rename prenatal_consult_place : Private Hos = 1,Govt Hos = 2, Home-LHW =3, Home-LHV = 3,Home Doc = 3,Home-TBA = 4,Other = 4   
 levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Private Hosp/Clinic"] <- "1"
 levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Govt Hosp/Clinic"] <- "2"
-levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Home-TBA"] <- "3"
+levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Home-TBA"] <- "4"
 levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Home-LHW"] <- "3"
 levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Home-LHV"] <- "3"
 levels(pp_care$prenatal_consult_place)[levels(pp_care$prenatal_consult_place)=="Home-Doctor"] <- "3"
@@ -85,11 +85,11 @@ levels(pp_care$birth_place)[levels(pp_care$birth_place)=="Other"] <- "4"
 
 #rename delivery assistance with Doctors = 1 , Nurses,LHV,LHW = 2, Others 3
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Doctor"] <- "1"
-levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Nurse"] <- "2"
+levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Nurse"] <- "1"
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="LHV"] <- "2"
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="LHW"] <- "2"
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Family member/relative/neighbour"] <- "3"
-levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Midwife"] <- "3"
+levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Midwife"] <- "2"
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="TBA"] <- "3"
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Trained Dai"] <- "3"
 levels(pp_care$delivery_assistance)[levels(pp_care$delivery_assistance)=="Other"] <- "3"
@@ -108,10 +108,10 @@ levels(pp_care$postnatal_consult_visits)[levels(pp_care$postnatal_consult_visits
 levels(pp_care$postnatal_consult_visits)[levels(pp_care$postnatal_consult_visits)=="5"]  <- "3"
 levels(pp_care$postnatal_consult_visits)[levels(pp_care$postnatal_consult_visits)=="6"]  <- "3"
 
-#rename postnatal_consult_place : Private Hos = 1,Govt Hos = 2, Home-TBA = 3, Home-LHW =3, Home-LHV = 3,Home Doc = 3,Other = 3   
+#rename postnatal_consult_place : Private Hos = 1,Govt Hos = 2, Home-LHW =3, Home-LHV = 3,Home Doc = 3, Home-TBA = 4 Other = 4   
 levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Private Hosp/Clinic"] <- "1"
 levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Govt Hosp/Clinic"] <- "2"
-levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Home-TBA"] <- "3"
+levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Home-TBA"] <- "4"
 levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Home-LHW"] <- "3"
 levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Home-LHV"] <- "3"
 levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=="Home-Doctor"] <- "3"
@@ -123,7 +123,7 @@ levels(pp_care$postnatal_consult_place)[levels(pp_care$postnatal_consult_place)=
 #birth in provinces
 province_birth <-
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarize(total_birth = sum(given_birth == 1) +sum(given_birth == 2),
             total_live_birth = sum(given_birth == 1),
@@ -178,7 +178,7 @@ write.csv(x=district_prenatal,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tables/p
 #province prenatal consultation visits
 province_prenatal_visits <-
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarize(n(),
             total_visits = sum(prenatal_consult_visits == 1,na.rm = TRUE) + sum(prenatal_consult_visits == 2,na.rm = TRUE) + sum(prenatal_consult_visits == 3,na.rm = TRUE),
@@ -211,9 +211,9 @@ write.csv(x=district_prenatal_visits,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/t
 #prenatal consultation Place province
 province_prenatal_consultation_place <- 
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
-  summarise(Total_places = sum(prenatal_consult_place==1,prenatal_consult_place==2,prenatal_consult_place==3,na.rm = TRUE),
+  summarise(Total_places = sum(prenatal_consult_place==1,prenatal_consult_place==2,prenatal_consult_place==3,prenatal_consult_place==4,na.rm = TRUE),
             Private_Hospital = sum(prenatal_consult_place==1,na.rm = TRUE),
             Govt_Dispen = sum(prenatal_consult_place==2,na.rm = TRUE),
             Home_LHV = sum(prenatal_consult_place==3,na.rm = TRUE),
@@ -231,7 +231,7 @@ district_prenatal_consultation_place <-
   pp_care %>%
   filter(region == "rural") %>%
   group_by(district) %>%
-  summarise(Total_places = sum(prenatal_consult_place==1,prenatal_consult_place==2,prenatal_consult_place==3,na.rm = TRUE),
+  summarise(Total_places = sum(prenatal_consult_place==1,prenatal_consult_place==2,prenatal_consult_place==3,prenatal_consult_place==4,na.rm = TRUE),
             Private_Hospital = sum(prenatal_consult_place==1,na.rm = TRUE),
             Govt_Dispen = sum(prenatal_consult_place==2,na.rm = TRUE),
             Home_LHV = sum(prenatal_consult_place==3,na.rm = TRUE),
@@ -275,7 +275,7 @@ write.csv(x=district_tetnus_toxoid,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tab
 #province birth_place 
 province_birth_place <- 
 pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarise(Total_places = sum(birth_place==1,birth_place==2,birth_place==3,na.rm = TRUE,birth_place==4,na.rm = TRUE),
             Private_Hospital = sum(birth_place==1,na.rm = TRUE),
@@ -312,7 +312,7 @@ write.csv(x=district_birth_place,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/table
 # province Delivery Assistance 
 province_delivery_assistance <- 
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarise(Total= sum(delivery_assistance == 1,delivery_assistance == 2,delivery_assistance == 3,na.rm = TRUE),
             Doc = sum(delivery_assistance==1,na.rm = TRUE),
@@ -375,7 +375,7 @@ write.csv(x=district_postnatal,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tables/
 #province postnatal consultation visits
 province_postnatal_visits <-
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarize(n(),
             total_visits = sum(postnatal_consult_visits == 1,na.rm = TRUE) + sum(postnatal_consult_visits == 2,na.rm = TRUE) + sum(postnatal_consult_visits == 3,na.rm = TRUE),
@@ -406,12 +406,12 @@ write.csv(x=district_postnatal_visits,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/
 
 
 #TABLE 18
-#prenatal consultation Place province
+#postnatal consultation Place province
 province_postnatal_consultation_place <- 
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
-  summarise(Total_places = sum(postnatal_consult_place==1,postnatal_consult_place==2,postnatal_consult_place==3,na.rm = TRUE),
+  summarise(Total_places = sum(postnatal_consult_place==1,postnatal_consult_place==2,postnatal_consult_place==3,postnatal_consult_place==4,na.rm = TRUE),
             Private_Hospital = sum(postnatal_consult_place==1,na.rm = TRUE),
             Govt_Dispen = sum(postnatal_consult_place==2,na.rm = TRUE),
             Home_LHV = sum(postnatal_consult_place==3,na.rm = TRUE),
@@ -424,7 +424,7 @@ province_postnatal_consultation_place <-
   arrange(province)
 
 #TABLE 19
-#prenatal consultation Place district
+#postnatal consultation Place district
 district_postnatal_consultation_place <- 
   pp_care %>%
   filter(region == "rural") %>%
@@ -448,7 +448,7 @@ write.csv(x=district_postnatal_consultation_place,file = "E:/IHI-2/IHI-2 PSLM/Pr
 
 province_no_tt <- 
   pp_care %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarise(Total_responses = sum(No_injections==0,No_injections==1,No_injections==2,na.rm = TRUE),
             without_injection = sum(No_injections == 0,na.rm = TRUE),

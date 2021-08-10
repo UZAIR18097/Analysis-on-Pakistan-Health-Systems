@@ -13,10 +13,10 @@ library(foreign)
 library(tidyverse)
 
 #load the health data
-F1 <- read.spss(file = "E:/IHI-2/Project/IHI-2/Data/PSLM spss data/SecF1.sav",use.value.label=TRUE,to.data.frame=TRUE)
+F1 <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecF1.sav",use.value.label=TRUE,to.data.frame=TRUE)
 F1 <- as_tibble(F1)
 
-F2 <- read.spss(file = "E:/IHI-2/Project/IHI-2/Data/PSLM spss data/SecF2.sav",use.value.label=TRUE,to.data.frame=TRUE)
+F2 <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecF2.sav",use.value.label=TRUE,to.data.frame=TRUE)
 F2 <- as_tibble(F2)
 
 #select the required data

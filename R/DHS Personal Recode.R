@@ -13,7 +13,7 @@ library(foreign)
 library(tidyverse)
 
 
-pp_recode <- read.spss(file = "E:/IHI-2/Project/IHI-2/Data/DHS spss data/Household Person Recode.sav",use.value.label=TRUE,to.data.frame=TRUE)
+pp_recode <- read.spss(file = "E:/IHI-2/Project/Data/DHS spss data/Household Person Recode.sav",use.value.label=TRUE,to.data.frame=TRUE)
 
 pp <- as_tibble(pp_recode)
 

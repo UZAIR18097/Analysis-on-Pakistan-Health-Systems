@@ -13,11 +13,11 @@ library(foreign)
 library(tidyverse)
 
 #load the immunization data
-secI <- read.spss(file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/Data/PSLM spss data/SecI.sav",use.value.label=TRUE,to.data.frame=TRUE)
+secI <- read.spss(file = "E:/IHI-2/Project/Data/PSLM spss data/SecI.sav",use.value.label=TRUE,to.data.frame=TRUE)
 secI <- as_tibble(secI)
 
 #select the required data
-immunization <- select(secI,c(Province,Region,district,siaq03,siaq5a,siaq5b,siaq5c,siaq5d,siaq5e,siaq5f,siaq5g,siaq5h,siaq5i,siaq5j,siaq5k,siaq5l,siaq5m,siaq5n,siaq06,,siaq07,siaq08))
+immunization <- select(secI,c(Province,Region,district,siaq03,siaq5a,siaq5b,siaq5c,siaq5d,siaq5e,siaq5f,siaq5g,siaq5h,siaq5i,siaq5j,siaq5k,siaq5l,siaq5m,siaq5n,siaq06,,siaq07,siaq08,siaq09))
 
 #rename column names
 immunization <-rename(
@@ -31,7 +31,7 @@ immunization <-rename(
                 polio0 = siaq5h,polio1 = siaq5i,polio2 = siaq5j,polio3 = siaq5k,
                 IPV = siaq5l,
                 measles1 = siaq5m,measles2 = siaq5n,
-                suffered_diarrheoa = siaq06,diarrheoa_consultation = siaq07,diar_consultation_place = siaq08
+                suffered_diarrheoa = siaq06,diarrheoa_consultation = siaq07,diar_consultation_place = siaq08 , ORS= siaq09
                 )
 
 #find column wise null values
@@ -97,6 +97,11 @@ levels(immunization$diar_consultation_place)[levels(immunization$diar_consultati
 levels(immunization$diar_consultation_place)[levels(immunization$diar_consultation_place)=="hakeem/herbist/homeopath"] <- "4"
 levels(immunization$diar_consultation_place)[levels(immunization$diar_consultation_place)=="other"] <- "4"
 
+#Rename ORS 0 =0 from chemist = 1 , made it by myself = 1 ,No=2
+levels(immunization$ORS)[levels(immunization$ORS)=="0"] <- "0"
+levels(immunization$ORS)[levels(immunization$ORS)=="from chemist"] <- "1"
+levels(immunization$ORS)[levels(immunization$ORS)=="made it my self"] <- "1"
+levels(immunization$ORS)[levels(immunization$ORS)=="No"] <- "2"
 ####################TABLES#####################################################################################################################################
 #TABLE 1
 #%immunized in provinces
@@ -125,7 +130,7 @@ write.csv(x=district_immunised,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tables/
 #BCG in provinces
 province_BCG <-
   immunization %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarize(count = n(),
             total_BCG = sum(BCG==1,na.rm = TRUE),
@@ -171,7 +176,7 @@ write.csv(x=district_penta,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tables/immu
 #Pneum3 in provinces
 province_pneu3 <-
   immunization %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarize(count = n(),
             total_pneu3 = sum(pneum3==1,na.rm = TRUE),
@@ -260,7 +265,7 @@ write.csv(x= district_measles,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tables/i
 #Province Diarrhoea Suffered
 province_diarrhoea <-
   immunization %>%
-  filter(region == "rural") %>%
+  #filter(region == "rural") %>%
   group_by(province) %>%
   summarize(count = n(),
             total_diarr = sum(suffered_diarrheoa==1,na.rm = TRUE),
@@ -339,4 +344,16 @@ district_diarr_consult_place <-
   ) %>%
   arrange(district)
 write.csv(x= district_diarr_consult_place,file = "E:/IHI-2/IHI-2 PSLM/Project/IHI-2/tables/immunisation/district_diarr_consult_place.csv")
+
+#TABLE 21
+#ORS application
+province_ORS_application <-
+  immunization %>%
+  #filter(region == "rural") %>%
+  group_by(province) %>%
+  summarize(
+            total_diarr = sum(ORS == 1,ORS == 2,na.rm = TRUE),
+            ORS_application = sum(ORS == 1,na.rm = TRUE),
+            percent_ORS_application = (ORS_application/total_diarr)*100) %>%
+  arrange(province)
 
